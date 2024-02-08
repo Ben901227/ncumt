@@ -38,7 +38,7 @@
                         <tr>
                             <td>{{ $loop->index + 1 }}</td>
                             @if ($judgement->trip_tag == 0)
-                                <td>{{ $judgement->name }}</td>
+                                <td >{{ $judgement->name }}</td>
                             @elseif ($judgement->trip_tag == 1)
                                 <td>{{ $judgement->name }} <span style="color:red">(壓縮行程)</span></td>
                             @elseif ($judgement->trip_tag == 2)
@@ -55,13 +55,24 @@
                             <td>{{ $judgement->water }} 天</td>
                             <td>{{ $judgement->score }} 分</td>
                             <td>{{ $judgement->result_level }}</td>
+                            <!-- 幹部才能編輯 -->
+                            @auth
+                                @if(Auth::user()->role > 0)
+                                    <td>
+                                        <!-- 編輯按鈕 -->
+                                        <button wire:click="edit({{ $judgement->id }})" class="bi bi-pencil-square"></button>
+                                        <!-- 刪除按鈕 -->
+                                        <button onclick="confirmDelete('{{ $judgement->id }}')" class="bi bi-trash"></button>
+                                    </td>
+                                @endif
+                            @endauth
                         </tr>
                     @endforeach
                     {{--若資料不滿一頁，則補空--}}
                     @for($i = count($judgements) + 1; $i <= $amountOfPage ; $i++)
                         <tr>
                             <td>{{ $i }}</td>
-                            @for($j = 1; $j <= 12; $j++)
+                            @for($j = 1; $j <= $amountOfJudgementColumns - 2; $j++)
                                 <td></td>
                             @endfor
                         </tr>
@@ -71,10 +82,11 @@
                 <div class="d-flex justify-content-center">
                     {{ $judgements->links() }}
                 </div>
-            </div>
-        </div><!-- 評分紀錄表 End  -->
+            </div><!-- 評分紀錄表 End  -->
+        </div>
     </div>
-</section>>
+</section>
+<script src="{{ asset('assets/js/confirmDelete.js') }}"></script>
 
 
 
