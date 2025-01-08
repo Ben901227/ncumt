@@ -6,7 +6,9 @@
             <input type="text" class="form-control" wire:model.lazy="searchTerm" placeholder="搜尋路線名稱..."
                    style="padding-right: 2.5rem;">
             @if($searchTerm)
-                <i class="bi bi-x position-absolute" style="top: 50%; right: 2.5rem; transform: translateY(-50%); cursor: pointer; font-size: 2rem; opacity: 0.5 {{ $searchTerm ? '' : 'display: none;' }}" wire:click="clearSearch"></i>
+                <i class="bi bi-x position-absolute"
+                   style="top: 50%; right: 2.5rem; transform: translateY(-50%); cursor: pointer; font-size: 2rem; opacity: 0.5 {{ $searchTerm ? '' : 'display: none;' }}"
+                   wire:click="clearSearch"></i>
             @endif
             <button class="btn btn-outline-secondary position-absolute top-0 end-0" type="button"
                     style="height: 100%;" wire:click="performSearch">
@@ -80,7 +82,9 @@
                         <td>{{ $judgement->score }} 分</td>
                         <td>{{ $judgement->result_level }}</td>
                         <td class="show-mobile">
-                            <button type="button" class="p-0" style="width: 25px; height: 25px; font-size: 1.0rem; line-height: 25px; text-align: center;" data-bs-toggle="modal"
+                            <button type="button" class="p-0"
+                                    style="width: 25px; height: 25px; font-size: 1.0rem; line-height: 25px; text-align: center;"
+                                    data-bs-toggle="modal"
                                     data-bs-target="#modal-{{ $judgement->id }}">
                                 <i class="bi bi-info-circle"></i>
                             </button>
@@ -100,10 +104,9 @@
                 @endforeach
                 </tbody>
             </table>
-                        @foreach($judgements as $judgement)
+            @foreach($judgements as $judgement)
                 <div class="modal fade" id="modal-{{ $judgement->id }}" tabindex="-1"
-                     aria-labelledby="exampleModalLabel"
-                     aria-hidden="true" role="dialog">
+                     aria-labelledby="exampleModalLabel" aria-hidden="{{ $loop->index === 0 ? 'false' : 'true' }}" role="dialog">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div
@@ -112,7 +115,7 @@
                                 <button type="button" class="btn-close position-absolute" style="right: 1rem;"
                                         data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body" inert>
                                 <table class="table table-light table-bordered table-striped mobile-table">
                                     <tbody>
                                     <tr>
@@ -190,7 +193,7 @@
                         </div>
                     </div>
                 </div>
-                        @endforeach
+            @endforeach
             <div class="d-flex justify-content-center">
                 {{ $judgements->links() }}
             </div>
