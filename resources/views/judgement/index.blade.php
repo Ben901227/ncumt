@@ -5,7 +5,7 @@
 @section('content')
     <main id="main">
         <section id="contact" class="contact mb-5">
-            <div class="container" data-aos="fade-up">
+            <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center mb-2">
                         <h1 class="page-title">隊伍難度評分系統</h1>
