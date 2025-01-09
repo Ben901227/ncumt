@@ -85,7 +85,7 @@
                             <button type="button" class="p-0"
                                     style="width: 25px; height: 25px; font-size: 1.0rem; line-height: 25px; text-align: center;"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#modal-{{ $judgement->id }}">
+                                    data-bs-target="#judgement-{{ $judgement->id }}">
                                 <i class="bi bi-info-circle"></i>
                             </button>
                         </td>
@@ -105,17 +105,17 @@
                 </tbody>
             </table>
             @foreach($judgements as $judgement)
-                <div class="modal fade" id="modal-{{ $judgement->id }}" tabindex="-1"
-                     aria-labelledby="exampleModalLabel" aria-hidden="{{ $loop->index === 0 ? 'false' : 'true' }}" role="dialog">
-                    <div class="modal-dialog modal-dialog-centered">
+                <div class="modal fade" id="judgement-{{ $judgement->id }}" tabindex="-1"
+                     aria-labelledby="judgementModalLabel">
+                    <div class="modal-dialog">
                         <div class="modal-content">
                             <div
                                 class="modal-header d-flex justify-content-center align-items-center position-relative">
-                                <h5 class="modal-title" id="exampleModalLabel">詳細資料</h5>
+                                <h5 class="modal-title" id="judgementModalLabel">詳細資料</h5>
                                 <button type="button" class="btn-close position-absolute" style="right: 1rem;"
                                         data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body" inert>
+                            <div class="modal-body" wire:key="judgementPage-modal-{{ $judgement->id }}">
                                 <table class="table table-light table-bordered table-striped mobile-table">
                                     <tbody>
                                     <tr>
@@ -131,47 +131,47 @@
                                         @elseif ($judgement->trip_tag == 2)
                                             <td>{{ $judgement->name }} <span style="color:green">(寬鬆行程)</span></td>
                                         @endif</tr>
-                                    <tr wire:key="judgementPage-modal-{{ $judgement->id }}">
+                                    <tr>
                                         <th scope="row">總天數</th>
                                         <td>{{ $judgement->normal_day + $judgement->abnormal_day}}</td>
                                     </tr>
-                                    <tr wire:key="judgementPage-modal-{{ $judgement->id }}">
+                                    <tr>
                                         <th scope="row">傳統路</th>
                                         <td>{{ $judgement->normal_day }} 天</td>
                                     </tr>
-                                    <tr wire:key="judgementPage-modal-{{ $judgement->id }}">
+                                    <tr>
                                         <th scope="row">非傳統路</th>
                                         <td>{{ $judgement->abnormal_day }} 天</td>
                                     </tr>
-                                    <tr wire:key="judgementPage-modal-{{ $judgement->id }}">
+                                    <tr>
                                         <th scope="row">路線</th>
                                         <td>{{ $levelArray[$judgement->level] }}</td>
                                     </tr>
-                                    <tr wire:key="judgementPage-modal-{{ $judgement->id }}">
+                                    <tr>
                                         <th scope="row">路標</th>
                                         <td>{{ $judgement->road }} 分</td>
                                     </tr>
-                                    <tr wire:key="judgementPage-modal-{{ $judgement->id }}">
+                                    <tr>
                                         <th scope="row">地形</th>
                                         <td>{{ $judgement->terrain }} 分</td>
                                     </tr>
-                                    <tr wire:key="judgementPage-modal-{{ $judgement->id }}">
+                                    <tr>
                                         <th scope="row">植被</th>
                                         <td>{{ $judgement->plant }} 分</td>
                                     </tr>
-                                    <tr wire:key="judgementPage-modal-{{ $judgement->id }}">
+                                    <tr>
                                         <th scope="row">體力</th>
                                         <td>{{ $judgement->energy }}</td>
                                     </tr>
-                                    <tr wire:key="judgementPage-modal-{{ $judgement->id }}">
+                                    <tr>
                                         <th scope="row">背水天數</th>
                                         <td>{{ $judgement->water }} 天</td>
                                     </tr>
-                                    <tr wire:key="judgementPage-modal-{{ $judgement->id }}">
+                                    <tr>
                                         <th scope="row">難度總分</th>
                                         <td>{{ $judgement->score }} 分</td>
                                     </tr>
-                                    <tr wire:key="judgementPage-modal-{{ $judgement->id }}">
+                                    <tr>
                                         <th scope="row">隊伍難度</th>
                                         <td>{{ $judgement->result_level }}</td>
                                     </tr>
@@ -200,3 +200,14 @@
         @endif
     </div>
 </div>
+
+<script>
+    document.addEventListener('livewire:load', () => {
+        Livewire.hook('message.processed', (component) => {
+            var modals = document.querySelectorAll('.modal.fade');
+            modals.forEach((modalElement) => {
+                bootstrap.Modal.getOrCreateInstance(modalElement);
+            });
+        });
+    });
+</script>
